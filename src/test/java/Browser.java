@@ -14,8 +14,7 @@ import java.util.concurrent.TimeUnit;
 public class Browser {
 
     private org.apache.logging.log4j.Logger logger = LogManager.getLogger(Browser.class);
-    protected static WebDriver driver;
-    private By ByXPath;
+    protected WebDriver driver;
 
     @Before
     public void StartUp() {
@@ -33,7 +32,7 @@ public class Browser {
     }
 
     @Test
-    public void task1() throws InterruptedException {
+    public void task1() {
         driver.quit();
         ChromeOptions option = new ChromeOptions();
         option.addArguments("headless");
@@ -45,7 +44,7 @@ public class Browser {
     }
 
     @Test
-    public void task2() throws InterruptedException {
+    public void task2() {
         driver.quit();
         ChromeOptions option = new ChromeOptions();
         option.addArguments("--kiosk");
@@ -57,14 +56,12 @@ public class Browser {
     }
 
     @Test
-    public void task3() throws InterruptedException {
+    public void task3() {
         driver.get("https://otus.ru");
         driver.findElement(By.cssSelector("button.header2__auth")).click();
         driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[2]/input")).sendKeys("gacojib958@otozuz.com");
         driver.findElement(By.xpath("/html/body/div[2]/div/div/div/div[3]/div[2]/div[2]/form/div[3]/input")).sendKeys("qwer1234");
         driver.findElement(By.cssSelector("button.new-button")).click();
-        Thread.sleep(2000);
         logger.info(driver.manage().getCookies());
     }
-
 }
