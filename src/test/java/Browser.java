@@ -1,19 +1,12 @@
 import io.github.bonigarcia.wdm.WebDriverManager;
-import org.apache.commons.io.FileUtils;
-import org.apache.logging.log4j.core.config.Order;
 import org.junit.*;
-
 import org.apache.logging.log4j.LogManager;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.chrome.ChromeOptions;
-import org.openqa.selenium.firefox.FirefoxDriver;
+import org.openqa.selenium.support.ui.ExpectedConditions;
+import org.openqa.selenium.support.ui.WebDriverWait;
 
-import java.io.File;
-import java.io.IOException;
-import java.util.NoSuchElementException;
-import java.util.Properties;
 import java.util.concurrent.TimeUnit;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -25,7 +18,7 @@ public class Browser {
     protected WebDriver driver;
 
     @Before
-    public void StartUp() {
+    public void startUp() {
         WebDriverManager.chromedriver().setup();
         driver = new ChromeDriver();
         driver.manage().timeouts().implicitlyWait(15,TimeUnit.SECONDS);
@@ -34,7 +27,7 @@ public class Browser {
     }
 
     @After
-    public void End() {
+    public void end() {
         if (driver != null)
             driver.quit();
     }
@@ -50,16 +43,14 @@ public class Browser {
     final String TG_CONTACT = "@danilovTest";
     final String COMPANY = "Тестовая компания";
     final String POSITION = "Тестировщик";
-    String login = System.getProperty("login");
-    String password = System.getProperty("password");
 
 
 
     public void aboutMe() {
         driver.get("https://otus.ru");
         driver.findElement(By.xpath("//*[contains(text(),'и регистрация')]/parent::button")).click();
-        driver.findElement(By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']")).sendKeys(login);
-        driver.findElement(By.xpath("//input[@placeholder='Введите пароль']")).sendKeys(password);
+        driver.findElement(By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']")).sendKeys(System.getProperty("login"));
+        driver.findElement(By.xpath("//input[@placeholder='Введите пароль']")).sendKeys(System.getProperty("password"));
         driver.findElement(By.xpath("//form[@action='/login/']//*[contains(text(),'Войти')]")).click();
         driver.findElement(By.xpath("//p[contains(@class,'username')]")).click();
         driver.findElement(By.xpath("//div[@class='header2-menu__dropdown-text']")).click();
@@ -67,7 +58,7 @@ public class Browser {
 
 
     @Test
-    public void test1InputData() throws InterruptedException {
+    public void test1InputData() {
        aboutMe();
        driver.findElement(By.xpath("//*[@id=\"id_fname\"]")).clear();
        driver.findElement(By.xpath("//*[@id=\"id_fname\"]")).sendKeys(RUS_FIRST_NAME);
@@ -83,8 +74,12 @@ public class Browser {
        driver.findElement(By.xpath("//*[@title='День рождения']")).sendKeys(BIRTHDAY);
        driver.findElement(By.xpath("//*[@name='country']/following-sibling::div")).click();
        driver.findElement(By.xpath("//*[@title='Россия']")).click();
-       Thread.sleep(1500);
-       driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).click();
+
+//       WebDriverWait wait = new WebDriverWait(driver,5);
+       //пробовал вторым       wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@data-title='Город' and @disabled]"))));
+       //пробовал первым wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@data-title='Город']")));
+
+        driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).click();
        driver.findElement(By.xpath("//*[@title='Москва']")).click();
        driver.findElement(By.xpath("//*[@name='english_level']/following-sibling::div")).click();
        driver.findElement(By.xpath("//*[@title='Начальный уровень (Beginner)']")).click();
@@ -148,13 +143,13 @@ public class Browser {
         Assert.assertEquals("Россия", driver.findElement(By.xpath("//*[@name='country']/following-sibling::div")).getText());
         Assert.assertEquals("Москва", driver.findElement(By.xpath("//*[@data-title='Город']/following-sibling::div")).getText());
         Assert.assertEquals("Начальный уровень (Beginner)", driver.findElement(By.xpath("//*[@data-title='Уровень знания английского языка']/following-sibling::div")).getText());
-        Assert.assertEquals(true, driver.findElement(By.cssSelector("#id_ready_to_relocate_1")).isSelected());
-        Assert.assertEquals(true, driver.findElement(By.xpath("//*[@id='id_ready_to_relocate_1']")).isSelected());
+        Assert.assertTrue(driver.findElement(By.cssSelector("#id_ready_to_relocate_1")).isSelected());
+        Assert.assertTrue(driver.findElement(By.xpath("//*[@id='id_ready_to_relocate_1']")).isSelected());
         Assert.assertEquals("Тelegram", driver.findElement(By.xpath("//*[@value='telegram']/following-sibling::div")).getText());
         Assert.assertEquals(TG_CONTACT, driver.findElement(By.cssSelector("#id_contact-0-value")).getAttribute("value"));
         Assert.assertEquals("VK", driver.findElement(By.xpath("//*[@value='vk']/following-sibling::div")).getText());
         Assert.assertEquals(VK_CONTACT, driver.findElement(By.cssSelector("#id_contact-1-value")).getAttribute("value"));
-        Assert.assertEquals(true, driver.findElement(By.cssSelector("#id_is_email_preferable")).isSelected());
+        Assert.assertTrue(driver.findElement(By.cssSelector("#id_is_email_preferable")).isSelected());
         Assert.assertEquals("Мужской", driver.findElement(By.xpath("//*[@id='id_gender']/descendant::option[@selected='']")).getText());
         Assert.assertEquals("Тестовая компания", driver.findElement(By.xpath("//*[@id=\"id_company\"]")).getAttribute("value"));
         Assert.assertEquals("Тестировщик", driver.findElement(By.xpath("//*[@id=\"id_work\"]")).getAttribute("value"));
