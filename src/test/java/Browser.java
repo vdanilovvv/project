@@ -4,10 +4,6 @@ import org.apache.logging.log4j.LogManager;
 import org.junit.runners.MethodSorters;
 import org.openqa.selenium.*;
 import org.openqa.selenium.chrome.ChromeDriver;
-import org.openqa.selenium.support.ui.ExpectedConditions;
-import org.openqa.selenium.support.ui.WebDriverWait;
-
-import java.time.Duration;
 import java.util.concurrent.TimeUnit;
 
 @FixMethodOrder(MethodSorters.NAME_ASCENDING)
@@ -48,10 +44,8 @@ public class Browser {
     public void aboutMe() {
         driver.get("https://otus.ru");
         driver.findElement(By.xpath("//*[contains(text(),'и регистрация')]/parent::button")).click();
-//        driver.findElement(By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']")).sendKeys(System.getProperty("login"));
-//        driver.findElement(By.xpath("//input[@placeholder='Введите пароль']")).sendKeys(System.getProperty("password"));
-        driver.findElement(By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']")).sendKeys("gacojib958@otozuz.com");
-        driver.findElement(By.xpath("//input[@placeholder='Введите пароль']")).sendKeys("qwer1234");
+        driver.findElement(By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']")).sendKeys(System.getProperty("login"));
+        driver.findElement(By.xpath("//input[@placeholder='Введите пароль']")).sendKeys(System.getProperty("password"));
         driver.findElement(By.xpath("//form[@action='/login/']//*[contains(text(),'Войти')]")).click();
         driver.findElement(By.xpath("//p[contains(@class,'username')]")).click();
         driver.findElement(By.xpath("//div[@class='header2-menu__dropdown-text']")).click();
@@ -59,10 +53,8 @@ public class Browser {
 
 
     @Test
-    public void test1InputData() throws InterruptedException {
-
+    public void test1InputData() {
         aboutMe();
-
         driver.findElement(By.xpath("//*[@id=\"id_fname\"]")).clear();
         driver.findElement(By.xpath("//*[@id=\"id_fname\"]")).sendKeys(RUS_FIRST_NAME);
         driver.findElement(By.xpath("//*[@id=\"id_fname_latin\"]")).clear();
@@ -77,27 +69,6 @@ public class Browser {
         driver.findElement(By.xpath("//*[@title='День рождения']")).sendKeys(BIRTHDAY);
         driver.findElement(By.xpath("//*[@name='country']/following-sibling::div")).click();
         driver.findElement(By.xpath("//*[@title='Россия']")).click();
-        System.out.println(driver.findElement(By.xpath("//*[@name='city']")).isDisplayed());
-        System.out.println(driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).isDisplayed());
-//        WebDriverWait wait = new WebDriverWait(driver, 10);
-//        wait.withTimeout(Duration.ofSeconds(20));
-
-        Thread.sleep(500);
-        System.out.println(driver.findElement(By.xpath("//*[@name='city']")).isDisplayed());
-        System.out.println(driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).isDisplayed());
-        driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).click();
-        driver.findElement(By.xpath("//*[@title='Москва']")).click();
-
-
-
-
-
-        //пробовал вторым       wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated(By.xpath("//input[@data-title='Город' and @disabled]"))));
-//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//*[@name='city']")));
-
-
-//        wait.until(ExpectedConditions.not(ExpectedConditions.presenceOfElementLocated((By.xpath("//input[@data-title='Город' and @disabled]")))));
-
 
 
         driver.findElement(By.xpath("//*[@name='english_level']/following-sibling::div")).click();
@@ -109,6 +80,9 @@ public class Browser {
         if ((!driver.findElement(By.xpath("//*[@title='Полный день']")).isSelected())) {
             driver.findElement(By.xpath("//*[@title='Полный день']/..")).click();
         }
+
+        driver.findElement(By.xpath("//*[@name='city']/following-sibling::div")).click();
+        driver.findElement(By.xpath("//*[@title='Москва']")).click();
 
         if (driver.findElements(By.xpath("//input[@value='" + VK_CONTACT + "']")).isEmpty()) {
             driver.findElement(By.xpath("//button[text()='Добавить']")).click();
@@ -144,20 +118,13 @@ public class Browser {
             driver.findElement(By.xpath("//*[@id=\"id_experience-0-experience\"]/option[3]")).click();
         }
 
-
-
-//               WebDriverWait wait = new WebDriverWait(driver,5);
-//
-//        wait.until(ExpectedConditions.elementToBeClickable(By.xpath("//input[@data-title='Город']/..//div']")));
-
-
         driver.findElement(By.xpath("//*[@title='Сохранить и продолжить']")).click();
 
     }
 
 
     @Test
-    public void test2CheckData() throws InterruptedException {
+    public void test2CheckData(){
         aboutMe();
         Assert.assertEquals(RUS_FIRST_NAME, driver.findElement(By.xpath("//*[@id=\"id_fname\"]")).getAttribute("value"));
         Assert.assertEquals(ENG_FIRST_NAME, driver.findElement(By.xpath("//*[@id=\"id_fname_latin\"]")).getAttribute("value"));
@@ -180,13 +147,6 @@ public class Browser {
         Assert.assertEquals("Тестировщик", driver.findElement(By.xpath("//*[@id=\"id_work\"]")).getAttribute("value"));
         Assert.assertEquals("Java", driver.findElement(By.xpath("//*[@id='id_experience-0-experience']/descendant::option[@selected='']")).getText());
         Assert.assertEquals("Только начал", driver.findElement(By.xpath("//*[@id='id_experience-0-level']/descendant::option[@selected='']")).getText());
-
-
-        //        Assert.assertEquals("true", driver.findElement(By.xpath("/html/body/div[1]/div/div[5]/div[3]/div[2]/div[2]/div/form/div[1]/div[3]/div[1]/div/div[1]/div[4]/div[2]/label[2]/span")).getAttribute("checked"));
-
-
-        Thread.sleep(2000);
-
     }
 
 
