@@ -1,3 +1,8 @@
-Запускать с командной строки: gradle -Dlogin=gacojib958@otozuz.com -Dpassword=qwer1234 --info test
+Отличие от ДЗ5:
+1) реализован PageObject;
+2) добавлена возможность запуска тестов с указанием браузера (chrome или firefox)
+В командной строке добавился параметр browser.
+
+Запускать с командной строки: gradle -Dlogin=gacojib958@otozuz.com -Dpassword=qwer1234 -Dbrowser=firefox  --info test
 
 Также, чтобы не падали тесты, везде где присутствует "Telegram", указана русская "Т", т.к. по непонятной мне причине, на странице она везде русская.

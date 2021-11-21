@@ -25,4 +25,5 @@ dependencies {
 test {
     systemProperty "login", System.getProperty("login")
     systemProperty "password", System.getProperty("password")
+    systemProperty "browser", System.getProperty("browser")
 }
