@@ -8,12 +8,11 @@ import org.openqa.selenium.chrome.ChromeDriver;
 import org.apache.logging.log4j.LogManager;
 import org.openqa.selenium.firefox.FirefoxDriver;
 
-
 import java.util.Locale;
 import java.util.concurrent.TimeUnit;
 
 public class BaseTest {
-    private final org.apache.logging.log4j.Logger logger = LogManager.getLogger(AboutMePageTest.class);
+    final org.apache.logging.log4j.Logger logger = LogManager.getLogger(TestingLessonsPageTest.class);
     protected WebDriver driver;
 
     final String URL = "https://otus.ru";
@@ -32,8 +31,7 @@ public class BaseTest {
                 driver = new FirefoxDriver();
             }
         }
-
-        driver.manage().timeouts().implicitlyWait(15, TimeUnit.SECONDS);
+        driver.manage().timeouts().implicitlyWait(5, TimeUnit.SECONDS);
         driver.manage().window().maximize();
         logger.info("Драйвер поднят");
         driver.get(URL);

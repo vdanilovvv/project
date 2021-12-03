@@ -9,8 +9,6 @@ public class AuthPage extends BasePage {
         super(driver);
     }
 
-
-
     private final By INPUT_LOGIN_PATH = By.xpath("//form[@action='/login/']/descendant::input[@placeholder='Электронная почта']");
     private final By INPUT_PASSWORD_PATH = By.xpath("//input[@placeholder='Введите пароль']");
     private final By LOGIN_BUTTON_PATH = By.xpath("//form[@action='/login/']//*[contains(text(),'Войти')]");
